@@ -8,7 +8,6 @@ public class MortgageCalculatorApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MortgageCalculatorApplication.class, args);
-		System.out.println("Hello Mortgage Calculator");
 	}
 
 }
