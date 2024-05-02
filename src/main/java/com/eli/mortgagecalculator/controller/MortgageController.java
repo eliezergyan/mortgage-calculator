@@ -5,20 +5,22 @@ import com.eli.mortgagecalculator.exceptions.MortgageCalculatorException;
 import com.eli.mortgagecalculator.models.Dto.MortgageResultDto;
 import com.eli.mortgagecalculator.models.LoanDetails;
 import com.eli.mortgagecalculator.service.MortgageCalculatorServiceImpl;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping( "/api/mortgage" )
+@RequestMapping( "/api" )
 public class MortgageController {
     private final MortgageCalculatorServiceImpl mortgageCalculatorService;
 
     public MortgageController (MortgageCalculatorServiceImpl mortgageCalculatorService) {
         this.mortgageCalculatorService = mortgageCalculatorService;
+    }
+
+    @GetMapping("/")
+    public String viewMortgage(){
+            return "Hello world";
     }
 
     @PostMapping( "/calculate" )

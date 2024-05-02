@@ -8,6 +8,7 @@ import com.eli.mortgagecalculator.models.LoanDetails;
 import com.eli.mortgagecalculator.repository.MortgageCalculatorRepository;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +31,10 @@ public class MortgageCalculatorServiceImpl implements MortgageCalculatorService 
     }
 
     @Override
-    public List<MortgageResultDto> compareMortgage (List<LoanDetails> loanDetails) {
+    public List<MortgageResultDto> compareMortgage(List<LoanDetails> loanDetails) {
         List<LoanDetails> details = new ArrayList<>();
         for (  LoanDetails loanDetail : loanDetails) {
+            System.out.println("loanDetail");
             validateLoanDetails( loanDetail );
             mortgageCalculatorRepository.save(loanDetail);
             details.add(loanDetail);
@@ -58,20 +60,29 @@ public class MortgageCalculatorServiceImpl implements MortgageCalculatorService 
 
         double monthlyPayment = loanAmount * (monthlyInterestRate / (1 - Math.pow(1 + monthlyInterestRate, -numberOfPayments)));
 
-
         double totalPayment = monthlyPayment * numberOfPayments;
-
-        double principalPaid = totalPayment - (monthlyPayment * numberOfPayments);
 
         double interestPaid = totalPayment - loanAmount;
 
+        double totalAmountPaid = loanAmount + interestPaid;
+
         MortgageResultDto result = new MortgageResultDto();
 
-        result.setMonthlyPayment(monthlyPayment);
-        result.setPrincipal(principalPaid);
-        result.setInterest(interestPaid);
+        result.setMonthlyPayment(formatNumber(monthlyPayment));
+        result.setPrincipal(formatNumber(loanAmount));
+        result.setInterest(formatNumber(interestPaid));
+        result.setTotalAmountPaid(formatNumber(totalAmountPaid));
 
         return result;
+    }
+
+    private double formatNumber(double value){
+        DecimalFormat df = new DecimalFormat("#.##");
+
+        String roundedNumber = df.format(value);
+
+        return Double.parseDouble(roundedNumber);
+
     }
 
     private void validateLoanDetails(LoanDetails loanDetails) {

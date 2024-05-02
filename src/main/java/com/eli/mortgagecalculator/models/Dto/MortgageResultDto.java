@@ -9,4 +9,6 @@ public class MortgageResultDto {
     private double principal;
 
     private double interest;
+
+    private double totalAmountPaid;
 }
